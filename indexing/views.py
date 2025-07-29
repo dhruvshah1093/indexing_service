@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import PromptEntry
 from .serializers import PromptEntrySerializer
-from .storage_utils import upload_file_to_s3
+from core.aws_utils.storage import upload_file_to_s3
 from core.kafka_utils.producer import KafkaProducerWrapper
 
 producer = KafkaProducerWrapper()
@@ -19,7 +19,7 @@ class PromptView(APIView):
         if not prompt:
             return Response({"error": "Prompt is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Save file locally (can extend to S3)
+        # Save file s3
         attachment_location = None
         if file:
             attachment_location = upload_file_to_s3(file, "prompt_files")

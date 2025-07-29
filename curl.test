@@ -1,0 +1,5 @@
+curl -X POST http://localhost:8000/api/prompt/ \
+  -H "Content-Type: multipart/form-data" \
+  -F "prompt=What is the total payable in cad dollars?" \
+  -F "group_id=123e4567-e89b-12d3-a456-426614174000" \
+  -F "file=@simple-invoice.png"
