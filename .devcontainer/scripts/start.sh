@@ -12,6 +12,20 @@ pip install --upgrade pip && pip install -r requirements.txt
 echo "Copying env..."
 cp .env.example .env
 
+# Dynamically populate .env with values from environment variables
+echo "Populating .env with secrets dynamically..."
+while IFS='=' read -r key _; do
+  # Skip empty lines and comments
+  if [[ -n "$key" && ! "$key" =~ ^# ]]; then
+    value="${!key}" # get value of environment variable
+    if [[ -n "$value" ]]; then
+      sed -i "s|^${key}=.*|${key}=${value}|g" .env
+    fi
+  fi
+done < .env.example
+
+echo ".env file populated with secrets"
+
 # Check if manage.py exists
 if [ ! -f manage.py ]; then
   echo "manage.py not found. Initializing Django project..."
